@@ -28,6 +28,7 @@ func timer2() {
  * Handle Get Response.
  */
 func handleGetRes(rw http.ResponseWriter, req *http.Request) {
+	fmt.Println("Someone In!")
 	io.WriteString(rw, "hello, you are in!")
 }
 
@@ -51,7 +52,9 @@ func main() {
 		}
 	}()
 
-	http.HandleFunc("/", handleGetRes)
-	http.ListenAndServe(":9000", nil)
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", handleGetRes)
+	mux.HandleFunc("/favicon.ico", func(rw http.ResponseWriter, req *http.Request) {})
+	http.ListenAndServe(":9000", mux)
 
 }
